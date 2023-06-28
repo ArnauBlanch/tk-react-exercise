@@ -9,7 +9,7 @@ export default function RecipeList() {
     axios
       .get(RECIPE_API_URL + "/recipes")
       .then((response) => setRecipes(response.data));
-  });
+  }, []);
 
   return (
     <div>

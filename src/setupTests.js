@@ -5,9 +5,6 @@
 import "@testing-library/jest-dom";
 import { server } from "./mocks/server.js";
 
-console.log("FETCH: ", fetch);
-global.fetch = fetch;
-
 // Establish API mocking before all tests.
 beforeAll(() => server.listen());
 
