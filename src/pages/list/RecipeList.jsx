@@ -1,14 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { RECIPE_API_URL } from "../../constants";
 
 export default function RecipeList() {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
     axios
-      .get(RECIPE_API_URL + "/recipes")
-      .then((response) => setRecipes(response.data));
+      .get("/api/recipes")
+      .then((response) => setRecipes(response.data))
+      .catch((error) => console.error(error));
   }, []);
 
   return (

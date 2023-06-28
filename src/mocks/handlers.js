@@ -1,8 +1,7 @@
 import { rest } from "msw";
-import { RECIPE_API_URL } from "../constants";
 
 export const handlers = [
-  rest.get(RECIPE_API_URL + "/recipes", (req, res, ctx) => {
+  rest.get("/api/recipes", (req, res, ctx) => {
     return res(
       ctx.json([
         { id: 1, name: "Chocolate Chip Cookies" },
