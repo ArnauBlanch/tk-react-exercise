@@ -11,7 +11,7 @@ describe("RecipeList", () => {
   it("displays the name of each recipe", async () => {
     render(<RecipeList />);
 
-    const recipes = await screen.findAllByRole("listitem");
+    const recipes = await screen.findAllByTestId("recipe-item");
     const recipesNames = recipes.map((r) => r.textContent);
     expect(recipesNames).toEqual([
       "Chocolate Chip Cookies",
