@@ -44,7 +44,7 @@ describe("RecipeList", () => {
     ]);
   });
 
-  it("opens recipe page when clicking on a recipe", async () => {
+  it("navigates to recipe page when clicking on a recipe", async () => {
     render(
       <Router>
         <RecipeList />

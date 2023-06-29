@@ -15,7 +15,7 @@ function App() {
     <Container>
       <Router>
         <Switch>
-          <Route path="/recipes/:id">
+          <Route path="/recipes/:recipeId">
             <Recipe />
           </Route>
           <Route path="/">

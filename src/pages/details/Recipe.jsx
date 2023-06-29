@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -18,20 +19,36 @@ const IngredientsList = styled.ul`
   line-height: 1.5rem;
 `;
 
+const BackButton = styled.a`
+  color: #312e81;
+  font-weight: 700;
+  font-size: 1rem;
+
+  &:hover {
+    color: #4f46e5;
+  }
+`;
+
 export default function Recipe() {
-  const { id } = useParams();
+  const { recipeId } = useParams();
+  const history = useHistory();
   const [recipe, setRecipe] = useState(null);
 
   useEffect(() => {
-    axios.get(`/api/recipes/${id}`).then((response) => {
+    axios.get(`/api/recipes/${recipeId}`).then((response) => {
       setRecipe(response.data);
     });
-  }, [id]);
+  }, [recipeId]);
+
+  const goToHome = () => history.push("/");
 
   return (
     <div>
       {recipe && (
         <>
+          <BackButton onClick={goToHome} data-testid="back-button">
+            ⬅️ Back
+          </BackButton>
           <Title>{recipe.name}</Title>
           <IngredientsHeading>Ingredients:</IngredientsHeading>
           <IngredientsList>
