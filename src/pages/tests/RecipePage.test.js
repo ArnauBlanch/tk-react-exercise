@@ -18,6 +18,15 @@ describe("Recipe page", () => {
     expect(recipeName).toBeInTheDocument();
   });
 
+  it("displays the recipe description", async () => {
+    render(<RecipePage />);
+
+    const recipeDescription = await screen.findByText(
+      "The best chocolate chip cookies ever!"
+    );
+    expect(recipeDescription).toBeInTheDocument();
+  });
+
   it("displays the recipe ingredients", async () => {
     render(<RecipePage />);
 
