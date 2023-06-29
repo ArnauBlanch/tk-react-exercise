@@ -1,6 +1,5 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter as Router } from "react-router-dom";
 import RecipeListPage from "../RecipeListPage";
 
 const mockHistoryPush = jest.fn();
@@ -45,14 +44,27 @@ describe("RecipeList", () => {
   });
 
   it("navigates to recipe page when clicking on a recipe", async () => {
-    render(
-      <Router>
-        <RecipeListPage />
-      </Router>
-    );
+    render(<RecipeListPage />);
 
     const recipe = await screen.findByText(/blueberry muffins/i);
     userEvent.click(recipe);
+
     expect(mockHistoryPush).toHaveBeenCalledWith("/recipes/3");
+  });
+
+  it("navigates to recipe creation page when clicking on the create button", async () => {
+    render(<RecipeListPage />);
+
+    await screen.findAllByTestId("recipe-item");
+
+    const createButton = await screen.findByRole("button", {
+      name: /create recipe/i,
+    });
+
+    userEvent.click(createButton);
+
+    await waitFor(async () => {
+      expect(mockHistoryPush).toHaveBeenCalledWith("/recipes/new");
+    });
   });
 });

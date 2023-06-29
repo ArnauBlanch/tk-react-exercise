@@ -47,7 +47,7 @@ describe("Recipe page", () => {
   it("navigates to recipe list when back button is clicked", async () => {
     render(<RecipePage />);
 
-    const backButton = await screen.findByTestId("back-button");
+    const backButton = await screen.findByRole("button", { name: /back/i });
     backButton.click();
 
     expect(mockHistoryPush).toHaveBeenCalledWith("/");

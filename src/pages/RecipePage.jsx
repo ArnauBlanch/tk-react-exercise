@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 
 const Title = styled.h1`
   color: #4f46e5;
-  text-align: center;
   margin-bottom: 1rem;
 `;
 
@@ -25,13 +24,18 @@ const IngredientsList = styled.ul`
   line-height: 1.5rem;
 `;
 
-const BackButton = styled.a`
-  color: #312e81;
+const BackButton = styled.button`
+  background-color: #a5b4fc;
+  padding: 0.6rem;
+  color: white;
   font-weight: 700;
   font-size: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
 
   &:hover {
-    color: #4f46e5;
+    background-color: #818cf8;
   }
 `;
 

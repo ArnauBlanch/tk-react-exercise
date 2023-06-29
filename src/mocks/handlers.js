@@ -68,4 +68,23 @@ export const handlers = [
       })
     );
   }),
+  rest.post("/api/recipes", async (req, res, ctx) => {
+    const expectedRecipe = {
+      name: "Pizza",
+      description: "Simple pizza recipe",
+      ingredients: [{ name: "tomato" }, { name: "cheese" }, { name: "dough" }],
+    };
+
+    const requestBody = await req.text();
+    if (requestBody !== JSON.stringify(expectedRecipe)) {
+      return res(ctx.status(400));
+    }
+
+    return res(
+      ctx.json({
+        ...expectedRecipe,
+        id: 4,
+      })
+    );
+  }),
 ];

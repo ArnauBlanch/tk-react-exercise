@@ -35,6 +35,21 @@ const RecipeIngredients = styled.div`
   color: #1e1b4b;
 `;
 
+const CreateRecipeButton = styled.button`
+  background-color: #a5b4fc;
+  padding: 0.6rem;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #818cf8;
+  }
+`;
+
 export default function RecipeListPage() {
   const [recipes, setRecipes] = useState([]);
   const history = useHistory();
@@ -53,6 +68,9 @@ export default function RecipeListPage() {
   return (
     <div>
       <Title>My recipes ({recipes.length})</Title>
+      <CreateRecipeButton onClick={() => history.push("/recipes/new")}>
+        🪄 Create recipe
+      </CreateRecipeButton>
       <div>
         {recipes.map((recipe) => (
           <RecipeItem
