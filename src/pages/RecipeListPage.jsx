@@ -2,6 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useQuery } from "../utils";
 
 const Title = styled.h1`
   font-size: 2em;
@@ -50,9 +51,18 @@ const CreateRecipeButton = styled.button`
   }
 `;
 
+const Alert = styled.div`
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
 export default function RecipeListPage() {
   const [recipes, setRecipes] = useState([]);
   const history = useHistory();
+  const { deleted } = useQuery();
 
   useEffect(() => {
     axios
@@ -68,6 +78,7 @@ export default function RecipeListPage() {
   return (
     <div>
       <Title>My recipes ({recipes.length})</Title>
+      {deleted && <Alert>Recipe deleted</Alert>}
       <CreateRecipeButton onClick={() => history.push("/recipes/new")}>
         🪄 Create recipe
       </CreateRecipeButton>

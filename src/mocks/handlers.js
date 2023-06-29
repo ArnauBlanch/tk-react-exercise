@@ -87,4 +87,10 @@ export const handlers = [
       })
     );
   }),
+  rest.delete("/api/recipes/:recipeId", (req, res, ctx) => {
+    if (req.params.recipeId !== "1") {
+      return res(ctx.status(400));
+    }
+    return res(ctx.status(204));
+  }),
 ];

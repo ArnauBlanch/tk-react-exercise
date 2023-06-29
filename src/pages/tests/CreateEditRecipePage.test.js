@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CreateEditRecipePage from "../CreateEditRecipePage";
 import { Router } from "react-router-dom";
@@ -37,5 +37,15 @@ describe("Create recipe", () => {
     await waitFor(() =>
       expect(history.location.pathname).toEqual("/recipes/4")
     );
+  });
+
+  it("navigates to recipe list when back button is clicked", async () => {
+    renderPage();
+
+    const backButton = await screen.findByRole("button", { name: /back/i });
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    act(() => userEvent.click(backButton));
+
+    expect(history.location.pathname).toEqual("/");
   });
 });

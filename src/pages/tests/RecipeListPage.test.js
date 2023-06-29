@@ -9,6 +9,8 @@ const wrapper = ({ children }) => <Router history={history}>{children}</Router>;
 const renderPage = () => render(<RecipeListPage />, { wrapper });
 
 describe("RecipeList", () => {
+  beforeEach(() => history.push("/"));
+
   it("has a title with the number of recipes", async () => {
     renderPage();
     const title = screen.getByRole("heading", { name: /recipes/i });
@@ -70,5 +72,14 @@ describe("RecipeList", () => {
     await waitFor(async () => {
       expect(history.location.pathname).toEqual("/recipes/new");
     });
+  });
+
+  it("shows a message when a recipe was deleted", async () => {
+    history.push({ pathname: "/", search: "?deleted=true" });
+    renderPage();
+
+    await screen.findAllByTestId("recipe-item");
+
+    await screen.findByText(/recipe deleted/i);
   });
 });

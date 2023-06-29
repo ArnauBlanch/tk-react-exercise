@@ -41,6 +41,21 @@ const SubmitButton = styled.button`
   cursor: pointer;
 `;
 
+const BackButton = styled.button`
+  background-color: #a5b4fc;
+  padding: 0.6rem;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #818cf8;
+  }
+`;
+
 export default function CreateEditRecipePage() {
   const history = useHistory();
 
@@ -56,6 +71,7 @@ export default function CreateEditRecipePage() {
     });
   };
 
+  const goToHome = () => history.push("/");
   const createRecipe = (data) => {
     axios
       .post("/api/recipes/", data)
@@ -65,7 +81,9 @@ export default function CreateEditRecipePage() {
 
   return (
     <div>
+      <BackButton onClick={goToHome}>⬅️ Back</BackButton>
       <Title>Create new recipe</Title>
+
       <Form onSubmit={onFormSubmit(createRecipe)}>
         <InputFieldLabel htmlFor="name">Name</InputFieldLabel>
         <InputField type="text" id="name" name="name" />

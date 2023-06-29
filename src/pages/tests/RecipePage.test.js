@@ -1,19 +1,22 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Router, Route } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import RecipePage from "../RecipePage";
 
 const history = createMemoryHistory();
-const wrapper = ({ children }) => (
-  <Router history={history}>
-    <Route path="/recipes/:recipeId">{children}</Route>
-  </Router>
-);
+const wrapper = ({ children }) => {
+  return (
+    <Router history={history}>
+      <Route path="/recipes/:recipeId">{children}</Route>
+    </Router>
+  );
+};
 const renderPage = () => render(<RecipePage />, { wrapper });
 
 describe("Recipe page", () => {
-  beforeAll(() => history.push("/recipes/1"));
+  beforeEach(() => history.push("/recipes/1"));
+
   it("displays the recipe name", async () => {
     renderPage();
 
@@ -55,5 +58,17 @@ describe("Recipe page", () => {
     act(() => userEvent.click(backButton));
 
     expect(history.location.pathname).toEqual("/");
+  });
+
+  it("deletes recipe and navigates to recipe list when delete button is clicked", async () => {
+    renderPage();
+
+    const deleteButton = await screen.findByRole("button", { name: /delete/i });
+    deleteButton.click();
+
+    await waitFor(() => expect(history.location.pathname).toEqual("/"));
+    await waitFor(() =>
+      expect(history.location.search).toEqual("?deleted=true")
+    );
   });
 });
