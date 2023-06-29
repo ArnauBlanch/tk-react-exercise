@@ -1,7 +1,7 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router-dom";
-import RecipeList from "../RecipeList";
+import RecipeList from "./RecipeList";
 
 const mockHistoryPush = jest.fn();
 jest.mock("react-router-dom", () => ({
