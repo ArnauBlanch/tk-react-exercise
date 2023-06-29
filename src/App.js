@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import RecipeList from "./pages/list/RecipeList";
-import Recipe from "./pages/details/Recipe";
+import RecipeListPage from "./pages/RecipeListPage";
+import RecipePage from "./pages/RecipePage";
 
 const Container = styled.div`
   display: flex;
@@ -16,10 +16,10 @@ function App() {
       <Router>
         <Switch>
           <Route path="/recipes/:recipeId">
-            <Recipe />
+            <RecipePage />
           </Route>
           <Route path="/">
-            <RecipeList />
+            <RecipeListPage />
           </Route>
         </Switch>
       </Router>

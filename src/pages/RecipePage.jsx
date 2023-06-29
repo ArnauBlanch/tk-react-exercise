@@ -29,7 +29,7 @@ const BackButton = styled.a`
   }
 `;
 
-export default function Recipe() {
+export default function RecipePage() {
   const { recipeId } = useParams();
   const history = useHistory();
   const [recipe, setRecipe] = useState(null);

@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Recipe from "./Recipe";
+import RecipePage from "../RecipePage";
 
 const mockHistoryPush = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -10,16 +10,16 @@ jest.mock("react-router-dom", () => ({
   useHistory: () => ({ push: mockHistoryPush }),
 }));
 
-describe("Recipe", () => {
+describe("Recipe page", () => {
   it("displays the recipe name", async () => {
-    render(<Recipe />);
+    render(<RecipePage />);
 
     const recipeName = await screen.findByText("Chocolate Chip Cookies");
     expect(recipeName).toBeInTheDocument();
   });
 
   it("displays the recipe ingredients", async () => {
-    render(<Recipe />);
+    render(<RecipePage />);
 
     const recipeIngredients = await screen.findAllByRole("listitem");
     const recipeIngredientsText = recipeIngredients.map((i) => i.textContent);
@@ -36,7 +36,7 @@ describe("Recipe", () => {
   });
 
   it("navigates to recipe list when back button is clicked", async () => {
-    render(<Recipe />);
+    render(<RecipePage />);
 
     const backButton = await screen.findByTestId("back-button");
     backButton.click();

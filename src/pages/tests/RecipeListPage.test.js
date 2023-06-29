@@ -1,7 +1,7 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router-dom";
-import RecipeList from "./RecipeList";
+import RecipeListPage from "../RecipeListPage";
 
 const mockHistoryPush = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -11,13 +11,13 @@ jest.mock("react-router-dom", () => ({
 
 describe("RecipeList", () => {
   it("has a title with the number of recipes", async () => {
-    render(<RecipeList />);
+    render(<RecipeListPage />);
     const title = screen.getByRole("heading", { name: /recipes/i });
     await waitFor(() => expect(title).toHaveTextContent(/recipes \(3\)/i));
   });
 
   it("displays the name of each recipe", async () => {
-    render(<RecipeList />);
+    render(<RecipeListPage />);
 
     const recipes = await screen.findAllByTestId("recipe-item");
     const recipesNames = recipes.map(
@@ -31,7 +31,7 @@ describe("RecipeList", () => {
   });
 
   it("displays the number of ingredients for each recipe", async () => {
-    render(<RecipeList />);
+    render(<RecipeListPage />);
 
     const recipes = await screen.findAllByTestId("recipe-item");
     const recipesIngredients = recipes.map(
@@ -47,7 +47,7 @@ describe("RecipeList", () => {
   it("navigates to recipe page when clicking on a recipe", async () => {
     render(
       <Router>
-        <RecipeList />
+        <RecipeListPage />
       </Router>
     );
 

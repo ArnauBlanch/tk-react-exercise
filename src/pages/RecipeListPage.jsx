@@ -35,7 +35,7 @@ const RecipeIngredients = styled.div`
   color: #1e1b4b;
 `;
 
-export default function RecipeList() {
+export default function RecipeListPage() {
   const [recipes, setRecipes] = useState([]);
   const history = useHistory();
 
