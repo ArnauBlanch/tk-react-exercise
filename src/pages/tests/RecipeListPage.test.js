@@ -1,22 +1,22 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen, waitFor, within, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RecipeListPage from "../RecipeListPage";
+import { Router } from "react-router-dom";
+import { createMemoryHistory } from "history";
 
-const mockHistoryPush = jest.fn();
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useHistory: () => ({ push: mockHistoryPush }),
-}));
+const history = createMemoryHistory();
+const wrapper = ({ children }) => <Router history={history}>{children}</Router>;
+const renderPage = () => render(<RecipeListPage />, { wrapper });
 
 describe("RecipeList", () => {
   it("has a title with the number of recipes", async () => {
-    render(<RecipeListPage />);
+    renderPage();
     const title = screen.getByRole("heading", { name: /recipes/i });
     await waitFor(() => expect(title).toHaveTextContent(/recipes \(3\)/i));
   });
 
   it("displays the name of each recipe", async () => {
-    render(<RecipeListPage />);
+    renderPage();
 
     const recipes = await screen.findAllByTestId("recipe-item");
     const recipesNames = recipes.map(
@@ -30,7 +30,7 @@ describe("RecipeList", () => {
   });
 
   it("displays the number of ingredients for each recipe", async () => {
-    render(<RecipeListPage />);
+    renderPage();
 
     const recipes = await screen.findAllByTestId("recipe-item");
     const recipesIngredients = recipes.map(
@@ -44,16 +44,19 @@ describe("RecipeList", () => {
   });
 
   it("navigates to recipe page when clicking on a recipe", async () => {
-    render(<RecipeListPage />);
+    renderPage();
 
     const recipe = await screen.findByText(/blueberry muffins/i);
-    userEvent.click(recipe);
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await act(() => userEvent.click(recipe));
 
-    expect(mockHistoryPush).toHaveBeenCalledWith("/recipes/3");
+    await waitFor(() =>
+      expect(history.location.pathname).toEqual("/recipes/3")
+    );
   });
 
   it("navigates to recipe creation page when clicking on the create button", async () => {
-    render(<RecipeListPage />);
+    renderPage();
 
     await screen.findAllByTestId("recipe-item");
 
@@ -61,10 +64,11 @@ describe("RecipeList", () => {
       name: /create recipe/i,
     });
 
-    userEvent.click(createButton);
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await act(() => userEvent.click(createButton));
 
     await waitFor(async () => {
-      expect(mockHistoryPush).toHaveBeenCalledWith("/recipes/new");
+      expect(history.location.pathname).toEqual("/recipes/new");
     });
   });
 });

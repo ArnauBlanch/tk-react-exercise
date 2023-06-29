@@ -1,23 +1,23 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CreateEditRecipePage from "../CreateEditRecipePage";
+import { Router } from "react-router-dom";
+import { createMemoryHistory } from "history";
 
-const mockHistoryPush = jest.fn();
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useHistory: () => ({ push: mockHistoryPush }),
-}));
+const history = createMemoryHistory();
+const wrapper = ({ children }) => <Router history={history}>{children}</Router>;
+const renderPage = () => render(<CreateEditRecipePage />, { wrapper });
 
 describe("Create recipe", () => {
   it("contains a title about recipe creation", () => {
-    render(<CreateEditRecipePage />);
+    renderPage();
 
     const title = screen.getByRole("heading", { name: /Create new recipe/i });
     expect(title).toBeInTheDocument();
   });
 
   it("creates recipe when form is submitted", async () => {
-    render(<CreateEditRecipePage />);
+    renderPage();
 
     userEvent.type(screen.getByLabelText(/name/i), "Pizza");
 
@@ -35,7 +35,7 @@ describe("Create recipe", () => {
     userEvent.click(submitButton);
 
     await waitFor(() =>
-      expect(mockHistoryPush).toHaveBeenCalledWith("/recipes/4")
+      expect(history.location.pathname).toEqual("/recipes/4")
     );
   });
 });

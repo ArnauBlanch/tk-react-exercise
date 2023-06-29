@@ -1,25 +1,28 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { Router, Route } from "react-router-dom";
+import { createMemoryHistory } from "history";
 import RecipePage from "../RecipePage";
 
-const mockHistoryPush = jest.fn();
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useParams: () => ({
-    recipeId: "1",
-  }),
-  useHistory: () => ({ push: mockHistoryPush }),
-}));
+const history = createMemoryHistory();
+const wrapper = ({ children }) => (
+  <Router history={history}>
+    <Route path="/recipes/:recipeId">{children}</Route>
+  </Router>
+);
+const renderPage = () => render(<RecipePage />, { wrapper });
 
 describe("Recipe page", () => {
+  beforeAll(() => history.push("/recipes/1"));
   it("displays the recipe name", async () => {
-    render(<RecipePage />);
+    renderPage();
 
     const recipeName = await screen.findByText("Chocolate Chip Cookies");
     expect(recipeName).toBeInTheDocument();
   });
 
   it("displays the recipe description", async () => {
-    render(<RecipePage />);
+    renderPage();
 
     const recipeDescription = await screen.findByText(
       "The best chocolate chip cookies ever!"
@@ -28,7 +31,7 @@ describe("Recipe page", () => {
   });
 
   it("displays the recipe ingredients", async () => {
-    render(<RecipePage />);
+    renderPage();
 
     const recipeIngredients = await screen.findAllByRole("listitem");
     const recipeIngredientsText = recipeIngredients.map((i) => i.textContent);
@@ -45,11 +48,12 @@ describe("Recipe page", () => {
   });
 
   it("navigates to recipe list when back button is clicked", async () => {
-    render(<RecipePage />);
+    renderPage();
 
     const backButton = await screen.findByRole("button", { name: /back/i });
-    backButton.click();
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    act(() => userEvent.click(backButton));
 
-    expect(mockHistoryPush).toHaveBeenCalledWith("/");
+    expect(history.location.pathname).toEqual("/");
   });
 });
