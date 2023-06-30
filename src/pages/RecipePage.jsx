@@ -72,7 +72,7 @@ export default function RecipePage() {
   const [recipe, setRecipe] = useState(null);
 
   useEffect(() => {
-    axios.get(`/api/recipes/${recipeId}`).then((response) => {
+    axios.get(`/api/recipes/${recipeId}/`).then((response) => {
       setRecipe(response.data);
     });
   }, [recipeId]);
@@ -80,7 +80,7 @@ export default function RecipePage() {
   const goToHome = () => history.push("/");
   const deleteRecipe = () =>
     axios
-      .delete(`/api/recipes/${recipeId}`)
+      .delete(`/api/recipes/${recipeId}/`)
       .then((response) => {
         if (response.status === 204) history.push("/?deleted=true");
       })

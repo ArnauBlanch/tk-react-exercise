@@ -92,7 +92,7 @@ export default function CreateEditRecipePage() {
 
   const updateRecipe = (data) =>
     axios
-      .patch(`/api/recipes/${recipeId}`, data)
+      .patch(`/api/recipes/${recipeId}/`, data)
       .then((response) =>
         history.push(`/recipes/${response.data.id}?updated=true`)
       )
