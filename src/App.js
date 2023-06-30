@@ -19,6 +19,9 @@ function App() {
           <Route path="/recipes/new">
             <CreateEditRecipePage />
           </Route>
+          <Route path="/recipes/:recipeId/edit">
+            <CreateEditRecipePage />
+          </Route>
           <Route path="/recipes/:recipeId">
             <RecipePage />
           </Route>

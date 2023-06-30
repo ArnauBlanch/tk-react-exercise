@@ -87,6 +87,29 @@ export const handlers = [
       })
     );
   }),
+  rest.patch("/api/recipes/1", async (req, res, ctx) => {
+    const expectedRecipe = {
+      name: "Spaghetti",
+      description: "Simple spaghetti recipe",
+      ingredients: [
+        { name: "pasta" },
+        { name: "tomato sauce" },
+        { name: "cheese" },
+      ],
+    };
+
+    const requestBody = await req.text();
+    if (requestBody !== JSON.stringify(expectedRecipe)) {
+      return res(ctx.status(400));
+    }
+
+    return res(
+      ctx.json({
+        ...expectedRecipe,
+        id: 1,
+      })
+    );
+  }),
   rest.delete("/api/recipes/:recipeId", (req, res, ctx) => {
     if (req.params.recipeId !== "1") {
       return res(ctx.status(400));

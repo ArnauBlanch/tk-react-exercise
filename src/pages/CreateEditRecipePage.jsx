@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 const Title = styled.h1`
   color: #4f46e5;
@@ -58,6 +58,18 @@ const BackButton = styled.button`
 
 export default function CreateEditRecipePage() {
   const history = useHistory();
+  const { recipeId } = useParams();
+  const isEditing = recipeId !== undefined;
+  const [recipe, setRecipe] = useState(null);
+
+  useEffect(() => {
+    if (isEditing) {
+      axios
+        .get(`/api/recipes/${recipeId}`)
+        .then((response) => setRecipe(response.data))
+        .catch((error) => console.error(error));
+    }
+  }, [recipeId, isEditing]);
 
   const onFormSubmit = (handler) => (event) => {
     event.preventDefault();
@@ -72,29 +84,58 @@ export default function CreateEditRecipePage() {
   };
 
   const goToHome = () => history.push("/");
-  const createRecipe = (data) => {
+  const createRecipe = (data) =>
     axios
       .post("/api/recipes/", data)
       .then((response) => history.push(`/recipes/${response.data.id}`))
       .catch((error) => console.error(error));
-  };
+
+  const updateRecipe = (data) =>
+    axios
+      .patch(`/api/recipes/${recipeId}`, data)
+      .then((response) =>
+        history.push(`/recipes/${response.data.id}?updated=true`)
+      )
+      .catch((error) => console.error(error));
 
   return (
     <div>
       <BackButton onClick={goToHome}>⬅️ Back</BackButton>
-      <Title>Create new recipe</Title>
+      <Title>{isEditing ? "Edit recipe" : "Create new recipe"}</Title>
 
-      <Form onSubmit={onFormSubmit(createRecipe)}>
+      <Form onSubmit={onFormSubmit(isEditing ? updateRecipe : createRecipe)}>
         <InputFieldLabel htmlFor="name">Name</InputFieldLabel>
-        <InputField type="text" id="name" name="name" />
+        <InputField
+          type="text"
+          id="name"
+          name="name"
+          defaultValue={recipe?.name}
+          disabled={isEditing && recipe === null}
+        />
 
         <InputFieldLabel htmlFor="description">Description</InputFieldLabel>
-        <InputField type="text" id="description" name="description" />
+        <InputField
+          type="text"
+          id="description"
+          name="description"
+          defaultValue={recipe?.description}
+          disabled={isEditing && recipe === null}
+        />
 
         <InputFieldLabel htmlFor="ingredients">Ingredients</InputFieldLabel>
-        <InputField type="text" id="ingredients" name="ingredients" />
+        <InputField
+          type="text"
+          id="ingredients"
+          name="ingredients"
+          defaultValue={recipe?.ingredients
+            .map((ingredient) => ingredient.name)
+            .join(", ")}
+          disabled={isEditing && recipe === null}
+        />
 
-        <SubmitButton type="submit">Create</SubmitButton>
+        <SubmitButton type="submit">
+          {isEditing ? "Edit" : "Create"}
+        </SubmitButton>
       </Form>
     </div>
   );
