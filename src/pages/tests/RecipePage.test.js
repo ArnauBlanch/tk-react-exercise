@@ -71,4 +71,13 @@ describe("Recipe page", () => {
       expect(history.location.search).toEqual("?deleted=true")
     );
   });
+
+  it("shows a message when recipe was updated", async () => {
+    history.push({ pathname: "/recipes/1", search: "?updated=true" });
+    renderPage();
+
+    await screen.findByText("Chocolate Chip Cookies");
+
+    screen.getByText(/recipe updated/i);
+  });
 });

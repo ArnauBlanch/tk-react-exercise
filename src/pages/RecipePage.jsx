@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useQuery } from "../utils";
 
 const Title = styled.h1`
   color: #4f46e5;
@@ -55,8 +56,18 @@ const DeleteButton = styled.button`
   }
 `;
 
+const Alert = styled.div`
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+`;
+
 export default function RecipePage() {
   const { recipeId } = useParams();
+  const { updated } = useQuery();
   const history = useHistory();
   const [recipe, setRecipe] = useState(null);
 
@@ -83,6 +94,7 @@ export default function RecipePage() {
           <DeleteButton onClick={deleteRecipe} data-testid="delete">
             ❌ Delete
           </DeleteButton>
+          {updated && <Alert>Recipe updated</Alert>}
           <Title>{recipe.name}</Title>
           <Description>{recipe.description}</Description>
           <IngredientsHeading>Ingredients:</IngredientsHeading>
