@@ -83,7 +83,8 @@ export default function CreateEditRecipePage() {
     });
   };
 
-  const goToHome = () => history.push("/");
+  const goBack = () =>
+    isEditing ? history.push(`/recipes/${recipeId}`) : history.push("/");
   const createRecipe = (data) =>
     axios
       .post("/api/recipes/", data)
@@ -100,7 +101,7 @@ export default function CreateEditRecipePage() {
 
   return (
     <div>
-      <BackButton onClick={goToHome}>⬅️ Back</BackButton>
+      <BackButton onClick={goBack}>⬅️ Back</BackButton>
       <Title>{isEditing ? "Edit recipe" : "Create new recipe"}</Title>
 
       <Form onSubmit={onFormSubmit(isEditing ? updateRecipe : createRecipe)}>

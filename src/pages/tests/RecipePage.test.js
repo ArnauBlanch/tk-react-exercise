@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-unnecessary-act */
 import { render, screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Router, Route } from "react-router-dom";
@@ -54,10 +55,18 @@ describe("Recipe page", () => {
     renderPage();
 
     const backButton = await screen.findByRole("button", { name: /back/i });
-    // eslint-disable-next-line testing-library/no-unnecessary-act
     act(() => userEvent.click(backButton));
 
     expect(history.location.pathname).toEqual("/");
+  });
+
+  it("navigates to edit recipe page when edit button is clicked", async () => {
+    renderPage();
+
+    const editButton = await screen.findByRole("button", { name: /edit/i });
+    act(() => userEvent.click(editButton));
+
+    expect(history.location.pathname).toEqual("/recipes/1/edit");
   });
 
   it("deletes recipe and navigates to recipe list when delete button is clicked", async () => {

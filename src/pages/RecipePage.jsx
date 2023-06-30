@@ -40,6 +40,22 @@ const BackButton = styled.button`
   }
 `;
 
+const EditButton = styled.button`
+  background-color: #a5b4fc;
+  margin-left: 0.5rem;
+  padding: 0.6rem;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #818cf8;
+  }
+`;
+
 const DeleteButton = styled.button`
   background-color: #fda4af;
   margin-left: 0.5rem;
@@ -78,6 +94,7 @@ export default function RecipePage() {
   }, [recipeId]);
 
   const goToHome = () => history.push("/");
+  const goToEditPage = () => history.push(`/recipes/${recipeId}/edit`);
   const deleteRecipe = () =>
     axios
       .delete(`/api/recipes/${recipeId}/`)
@@ -91,6 +108,7 @@ export default function RecipePage() {
       {recipe && (
         <>
           <BackButton onClick={goToHome}>⬅️ Back</BackButton>
+          <EditButton onClick={goToEditPage}>✏️ Edit</EditButton>
           <DeleteButton onClick={deleteRecipe} data-testid="delete">
             ❌ Delete
           </DeleteButton>

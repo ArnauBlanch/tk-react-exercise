@@ -134,13 +134,13 @@ describe("Edit recipe", () => {
     });
   });
 
-  it("navigates to recipe list when back button is clicked", async () => {
+  it("navigates to recipe page when back button is clicked", async () => {
     renderEditPage();
 
     const backButton = await screen.findByRole("button", { name: /back/i });
     // eslint-disable-next-line testing-library/no-unnecessary-act
     act(() => userEvent.click(backButton));
 
-    expect(history.location.pathname).toEqual("/");
+    expect(history.location.pathname).toEqual("/recipes/1");
   });
 });
