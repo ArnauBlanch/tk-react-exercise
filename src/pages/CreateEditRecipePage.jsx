@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import useNavigation from "../hooks/useNavigation";
 import Button from "../components/Button";
 import Title from "../components/Title";
 import {
@@ -42,7 +43,7 @@ const formatIngredients = (ingredients) =>
   ingredients?.map((ingredient) => ingredient.name).join(", ");
 
 export default function CreateEditRecipePage() {
-  const history = useHistory();
+  const { navigateToRecipePage, navigateToRecipeListPage } = useNavigation();
   const { recipeId } = useParams();
   const isEditing = recipeId !== undefined;
   const [recipe, setRecipe] = useState(null);
@@ -68,17 +69,15 @@ export default function CreateEditRecipePage() {
   };
 
   const goBack = () =>
-    isEditing ? history.push(`/recipes/${recipeId}`) : history.push("/");
+    isEditing ? navigateToRecipePage(recipeId) : navigateToRecipeListPage();
   const createRecipe = (data) =>
     createRecipeAPI(data)
-      .then((response) => history.push(`/recipes/${response.data.id}`))
+      .then((response) => navigateToRecipePage(response.data.id, "created"))
       .catch((error) => console.error(error));
 
   const updateRecipe = (data) =>
     updateRecipeAPI(recipeId, data)
-      .then((response) =>
-        history.push(`/recipes/${response.data.id}?updated=true`)
-      )
+      .then((response) => navigateToRecipePage(response.data.id, "updated"))
       .catch((error) => console.error(error));
 
   const formFieldsDisabled = isEditing && !recipe;

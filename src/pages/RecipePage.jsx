@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useQuery } from "../utils";
@@ -10,6 +9,7 @@ import {
   getRecipe as getRecipeAPI,
   deleteRecipe as deleteRecipeAPI,
 } from "../data/api";
+import useNavigation from "../hooks/useNavigation";
 
 const DeleteButton = styled(Button)`
   background-color: #fda4af;
@@ -30,7 +30,8 @@ const ButtonsContainer = styled.div`
 export default function RecipePage() {
   const { recipeId } = useParams();
   const { updated } = useQuery();
-  const history = useHistory();
+  const { navigateToRecipeListPage, navigateToRecipeEditionPage } =
+    useNavigation();
   const [recipe, setRecipe] = useState(null);
 
   useEffect(() => {
@@ -39,12 +40,10 @@ export default function RecipePage() {
     });
   }, [recipeId]);
 
-  const goToHome = () => history.push("/");
-  const goToEditPage = () => history.push(`/recipes/${recipeId}/edit`);
   const deleteRecipe = () =>
     deleteRecipeAPI(recipeId)
       .then((response) => {
-        if (response.status === 204) history.push("/?deleted=true");
+        if (response.status === 204) navigateToRecipeListPage("deleted");
       })
       .catch((err) => console.error(err));
 
@@ -53,8 +52,10 @@ export default function RecipePage() {
       {recipe && (
         <>
           <ButtonsContainer>
-            <Button onClick={goToHome}>⬅️ Back</Button>
-            <Button onClick={goToEditPage}>✏️ Edit</Button>
+            <Button onClick={() => navigateToRecipeListPage()}>⬅️ Back</Button>
+            <Button onClick={() => navigateToRecipeEditionPage(recipeId)}>
+              ✏️ Edit
+            </Button>
             <DeleteButton onClick={deleteRecipe} data-testid="delete">
               ❌ Delete
             </DeleteButton>
