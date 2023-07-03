@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useQuery } from "../utils";
 import Recipe from "../components/Recipe";
 import Alert from "../components/Alert";
 import Button from "../components/Button";
+import {
+  getRecipe as getRecipeAPI,
+  deleteRecipe as deleteRecipeAPI,
+} from "../data/api";
 
 const DeleteButton = styled(Button)`
   background-color: #fda4af;
@@ -31,7 +34,7 @@ export default function RecipePage() {
   const [recipe, setRecipe] = useState(null);
 
   useEffect(() => {
-    axios.get(`/api/recipes/${recipeId}/`).then((response) => {
+    getRecipeAPI(recipeId).then((response) => {
       setRecipe(response.data);
     });
   }, [recipeId]);
@@ -39,8 +42,7 @@ export default function RecipePage() {
   const goToHome = () => history.push("/");
   const goToEditPage = () => history.push(`/recipes/${recipeId}/edit`);
   const deleteRecipe = () =>
-    axios
-      .delete(`/api/recipes/${recipeId}/`)
+    deleteRecipeAPI(recipeId)
       .then((response) => {
         if (response.status === 204) history.push("/?deleted=true");
       })

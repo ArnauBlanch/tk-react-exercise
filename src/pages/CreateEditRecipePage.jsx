@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import Title from "../components/Title";
+import {
+  getRecipe as getRecipeAPI,
+  createRecipe as createRecipeAPI,
+  updateRecipe as updateRecipeAPI,
+} from "../data/api";
 
 const Form = styled.form`
   display: flex;
@@ -45,8 +49,7 @@ export default function CreateEditRecipePage() {
 
   useEffect(() => {
     if (isEditing) {
-      axios
-        .get(`/api/recipes/${recipeId}`)
+      getRecipeAPI(recipeId)
         .then((response) => setRecipe(response.data))
         .catch((error) => console.error(error));
     }
@@ -67,14 +70,12 @@ export default function CreateEditRecipePage() {
   const goBack = () =>
     isEditing ? history.push(`/recipes/${recipeId}`) : history.push("/");
   const createRecipe = (data) =>
-    axios
-      .post("/api/recipes/", data)
+    createRecipeAPI(data)
       .then((response) => history.push(`/recipes/${response.data.id}`))
       .catch((error) => console.error(error));
 
   const updateRecipe = (data) =>
-    axios
-      .patch(`/api/recipes/${recipeId}/`, data)
+    updateRecipeAPI(recipeId, data)
       .then((response) =>
         history.push(`/recipes/${response.data.id}?updated=true`)
       )
