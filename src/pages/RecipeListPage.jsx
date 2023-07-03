@@ -1,32 +1,11 @@
-import styled from "styled-components";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useQuery } from "../utils";
 import RecipeItem from "../components/RecipeItem";
 import Alert from "../components/Alert";
-
-const Title = styled.h1`
-  font-size: 2em;
-  color: #4f46e5;
-  text-align: center;
-  margin-bottom: 3rem;
-`;
-
-const CreateRecipeButton = styled.button`
-  background-color: #a5b4fc;
-  padding: 0.6rem;
-  color: white;
-  font-weight: 700;
-  font-size: 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #818cf8;
-  }
-`;
+import Button from "../components/Button";
+import Title from "../components/Title";
 
 export default function RecipeListPage() {
   const [recipes, setRecipes] = useState([]);
@@ -43,14 +22,13 @@ export default function RecipeListPage() {
   }, []);
 
   const goToRecipePage = (id) => () => history.push(`/recipes/${id}`);
+  const goToCreateRecipePage = () => history.push("/recipes/new");
 
   return (
     <div>
       <Title>My recipes ({recipes.length})</Title>
       {deleted && <Alert>Recipe deleted</Alert>}
-      <CreateRecipeButton onClick={() => history.push("/recipes/new")}>
-        🪄 Create recipe
-      </CreateRecipeButton>
+      <Button onClick={goToCreateRecipePage}>🪄 Create recipe</Button>
       <div>
         {recipes.map((recipe) => (
           <RecipeItem

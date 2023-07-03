@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
-
-const Title = styled.h1`
-  color: #4f46e5;
-  text-align: center;
-  margin-bottom: 1rem;
-`;
+import Button from "../components/Button";
+import Title from "../components/Title";
 
 const Form = styled.form`
   display: flex;
@@ -30,31 +26,16 @@ const InputFieldLabel = styled.label`
   font-weight: 700;
 `;
 
-const SubmitButton = styled.button`
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  border: none;
+const SubmitButton = styled(Button)`
   background-color: #4f46e5;
-  color: #fff;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-`;
-
-const BackButton = styled.button`
-  background-color: #a5b4fc;
-  padding: 0.6rem;
-  color: white;
-  font-weight: 700;
-  font-size: 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
 
   &:hover {
-    background-color: #818cf8;
+    background-color: #3e38c4;
   }
 `;
+
+const formatIngredients = (ingredients) =>
+  ingredients?.map((ingredient) => ingredient.name).join(", ");
 
 export default function CreateEditRecipePage() {
   const history = useHistory();
@@ -103,7 +84,7 @@ export default function CreateEditRecipePage() {
 
   return (
     <div>
-      <BackButton onClick={goBack}>⬅️ Back</BackButton>
+      <Button onClick={goBack}>⬅️ Back</Button>
       <Title>{isEditing ? "Edit recipe" : "Create new recipe"}</Title>
 
       <Form onSubmit={onFormSubmit(isEditing ? updateRecipe : createRecipe)}>
@@ -130,9 +111,7 @@ export default function CreateEditRecipePage() {
           type="text"
           id="ingredients"
           name="ingredients"
-          defaultValue={recipe?.ingredients
-            .map((ingredient) => ingredient.name)
-            .join(", ")}
+          defaultValue={formatIngredients(recipe?.ingredients)}
           disabled={formFieldsDisabled}
         />
 

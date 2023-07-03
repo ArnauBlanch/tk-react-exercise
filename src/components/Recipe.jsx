@@ -1,10 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
-const Title = styled.h1`
-  color: #4f46e5;
-  margin-bottom: 1rem;
-`;
+import Title from "./Title";
 
 const Description = styled.p`
   font-size: 1.05rem;

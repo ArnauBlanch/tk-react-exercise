@@ -6,52 +6,22 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "../utils";
 import Recipe from "../components/Recipe";
 import Alert from "../components/Alert";
+import Button from "../components/Button";
 
-const BackButton = styled.button`
-  background-color: #a5b4fc;
-  padding: 0.6rem;
-  color: white;
-  font-weight: 700;
-  font-size: 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #818cf8;
-  }
-`;
-
-const EditButton = styled.button`
-  background-color: #a5b4fc;
-  margin-left: 0.5rem;
-  padding: 0.6rem;
-  color: white;
-  font-weight: 700;
-  font-size: 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #818cf8;
-  }
-`;
-
-const DeleteButton = styled.button`
+const DeleteButton = styled(Button)`
   background-color: #fda4af;
-  margin-left: 0.5rem;
-  padding: 0.6rem;
   color: #9f1239;
-  font-weight: 700;
-  font-size: 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
 
   &:hover {
     background-color: #fb7185;
   }
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 0.5rem;
 `;
 
 export default function RecipePage() {
@@ -80,11 +50,13 @@ export default function RecipePage() {
     <div>
       {recipe && (
         <>
-          <BackButton onClick={goToHome}>⬅️ Back</BackButton>
-          <EditButton onClick={goToEditPage}>✏️ Edit</EditButton>
-          <DeleteButton onClick={deleteRecipe} data-testid="delete">
-            ❌ Delete
-          </DeleteButton>
+          <ButtonsContainer>
+            <Button onClick={goToHome}>⬅️ Back</Button>
+            <Button onClick={goToEditPage}>✏️ Edit</Button>
+            <DeleteButton onClick={deleteRecipe} data-testid="delete">
+              ❌ Delete
+            </DeleteButton>
+          </ButtonsContainer>
           {updated && <Alert>Recipe updated</Alert>}
           <Recipe recipe={recipe} />
         </>
