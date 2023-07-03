@@ -4,26 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useQuery } from "../utils";
-
-const Title = styled.h1`
-  color: #4f46e5;
-  margin-bottom: 1rem;
-`;
-
-const Description = styled.p`
-  font-size: 1.05rem;
-  font-weight: 400;
-  margin-bottom: 2rem;
-`;
-
-const IngredientsHeading = styled.div`
-  font-size: 1.15rem;
-  font-weight: 700;
-`;
-
-const IngredientsList = styled.ul`
-  line-height: 1.5rem;
-`;
+import Recipe from "../components/Recipe";
 
 const BackButton = styled.button`
   background-color: #a5b4fc;
@@ -113,14 +94,7 @@ export default function RecipePage() {
             ❌ Delete
           </DeleteButton>
           {updated && <Alert>Recipe updated</Alert>}
-          <Title>{recipe.name}</Title>
-          <Description>{recipe.description}</Description>
-          <IngredientsHeading>Ingredients:</IngredientsHeading>
-          <IngredientsList>
-            {recipe.ingredients.map((ingredient) => (
-              <li key={ingredient.name}>{ingredient.name}</li>
-            ))}
-          </IngredientsList>
+          <Recipe recipe={recipe} />
         </>
       )}
     </div>

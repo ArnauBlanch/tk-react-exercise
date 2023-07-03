@@ -3,37 +3,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useQuery } from "../utils";
+import RecipeItem from "../components/RecipeItem";
 
 const Title = styled.h1`
   font-size: 2em;
   color: #4f46e5;
   text-align: center;
   margin-bottom: 3rem;
-`;
-
-const RecipeItem = styled.div`
-  width: 400px;
-  padding: 1rem;
-  margin: 0.8rem;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
-  background-color: white;
-  border-radius: 0.5rem;
-
-  &:hover {
-    background-color: #e0e7ff;
-  }
-`;
-
-const RecipeName = styled.div`
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #312e81;
-`;
-
-const RecipeIngredients = styled.div`
-  font-size: 0.8rem;
-  margin-top: 0.5rem;
-  color: #1e1b4b;
 `;
 
 const CreateRecipeButton = styled.button`
@@ -49,14 +25,6 @@ const CreateRecipeButton = styled.button`
   &:hover {
     background-color: #818cf8;
   }
-`;
-
-const Alert = styled.div`
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
 `;
 
 export default function RecipeListPage() {
@@ -86,14 +54,9 @@ export default function RecipeListPage() {
         {recipes.map((recipe) => (
           <RecipeItem
             key={recipe.id}
-            data-testid="recipe-item"
+            recipe={recipe}
             onClick={goToRecipePage(recipe.id)}
-          >
-            <RecipeName data-testid="recipe-name">{recipe.name}</RecipeName>
-            <RecipeIngredients data-testid="recipe-ingredients">
-              {recipe.ingredients.length} ingredients
-            </RecipeIngredients>
-          </RecipeItem>
+          />
         ))}
       </div>
     </div>
