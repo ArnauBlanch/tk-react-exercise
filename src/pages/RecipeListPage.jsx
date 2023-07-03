@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useQuery } from "../utils";
 import RecipeItem from "../components/RecipeItem";
+import Alert from "../components/Alert";
 
 const Title = styled.h1`
   font-size: 2em;

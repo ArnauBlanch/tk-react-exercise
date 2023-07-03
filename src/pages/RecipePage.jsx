@@ -5,6 +5,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useQuery } from "../utils";
 import Recipe from "../components/Recipe";
+import Alert from "../components/Alert";
 
 const BackButton = styled.button`
   background-color: #a5b4fc;
@@ -51,15 +52,6 @@ const DeleteButton = styled.button`
   &:hover {
     background-color: #fb7185;
   }
-`;
-
-const Alert = styled.div`
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
 `;
 
 export default function RecipePage() {
