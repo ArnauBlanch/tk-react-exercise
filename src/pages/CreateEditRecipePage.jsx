@@ -99,6 +99,8 @@ export default function CreateEditRecipePage() {
       )
       .catch((error) => console.error(error));
 
+  const formFieldsDisabled = isEditing && !recipe;
+
   return (
     <div>
       <BackButton onClick={goBack}>⬅️ Back</BackButton>
@@ -111,7 +113,7 @@ export default function CreateEditRecipePage() {
           id="name"
           name="name"
           defaultValue={recipe?.name}
-          disabled={isEditing && recipe === null}
+          disabled={formFieldsDisabled}
         />
 
         <InputFieldLabel htmlFor="description">Description</InputFieldLabel>
@@ -120,7 +122,7 @@ export default function CreateEditRecipePage() {
           id="description"
           name="description"
           defaultValue={recipe?.description}
-          disabled={isEditing && recipe === null}
+          disabled={formFieldsDisabled}
         />
 
         <InputFieldLabel htmlFor="ingredients">Ingredients</InputFieldLabel>
@@ -131,7 +133,7 @@ export default function CreateEditRecipePage() {
           defaultValue={recipe?.ingredients
             .map((ingredient) => ingredient.name)
             .join(", ")}
-          disabled={isEditing && recipe === null}
+          disabled={formFieldsDisabled}
         />
 
         <SubmitButton type="submit">
