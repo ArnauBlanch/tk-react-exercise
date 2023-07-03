@@ -1,24 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { useQuery } from "../utils";
 import RecipeItem from "../components/RecipeItem";
 import Alert from "../components/Alert";
 import Button from "../components/Button";
 import Title from "../components/Title";
-import { getRecipes as getRecipesAPI } from "../data/api";
+import useRecipeList from "../hooks/useRecipeList";
 
 export default function RecipeListPage() {
-  const [recipes, setRecipes] = useState([]);
+  const recipes = useRecipeList();
   const history = useHistory();
   const { deleted } = useQuery();
-
-  useEffect(() => {
-    getRecipesAPI()
-      .then((response) => {
-        setRecipes(response.data);
-      })
-      .catch((error) => console.error(error));
-  }, []);
 
   const goToRecipePage = (id) => () => history.push(`/recipes/${id}`);
   const goToCreateRecipePage = () => history.push("/recipes/new");
