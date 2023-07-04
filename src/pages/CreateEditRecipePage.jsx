@@ -39,47 +39,60 @@ const SubmitButton = styled(Button)`
   }
 `;
 
-const formatIngredients = (ingredients) =>
+const formatIngredientsForForm = (ingredients) =>
   ingredients?.map((ingredient) => ingredient.name).join(", ");
+
+const formatIngredientsForApi = (ingredients) =>
+  ingredients?.split(",").map((ingredient) => ({ name: ingredient.trim() }));
 
 export default function CreateEditRecipePage() {
   const { navigateToRecipePage, navigateToRecipeListPage } = useNavigation();
   const { recipeId } = useParams();
-  const isEditing = Boolean(recipeId);
   const recipe = useRecipe(recipeId);
+  const isEditing = Boolean(recipeId);
+  const formFieldsDisabled = isEditing && !recipe;
 
-  const onFormSubmit = (handler) => (event) => {
+  const createRecipe = async (data) => {
+    try {
+      const response = await createRecipeAPI(data);
+      navigateToRecipePage(response.data.id, "created");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateRecipe = async (data) => {
+    try {
+      await updateRecipeAPI(recipeId, data);
+      navigateToRecipePage(recipeId, "updated");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onFormSubmit = async (event, handler) => {
     event.preventDefault();
     const formElements = event.target.elements;
-    handler({
+    await handler({
       name: formElements.name.value,
       description: formElements.description.value,
-      ingredients: formElements.ingredients.value
-        .split(",")
-        .map((ingredient) => ({ name: ingredient.trim() })),
+      ingredients: formatIngredientsForApi(formElements.ingredients.value),
     });
   };
 
   const goBack = () =>
     isEditing ? navigateToRecipePage(recipeId) : navigateToRecipeListPage();
-  const createRecipe = (data) =>
-    createRecipeAPI(data)
-      .then((response) => navigateToRecipePage(response.data.id, "created"))
-      .catch((error) => console.error(error));
-
-  const updateRecipe = (data) =>
-    updateRecipeAPI(recipeId, data)
-      .then((response) => navigateToRecipePage(response.data.id, "updated"))
-      .catch((error) => console.error(error));
-
-  const formFieldsDisabled = isEditing && !recipe;
 
   return (
     <div>
       <Button onClick={goBack}>⬅️ Back</Button>
       <Title>{isEditing ? "Edit recipe" : "Create new recipe"}</Title>
 
-      <Form onSubmit={onFormSubmit(isEditing ? updateRecipe : createRecipe)}>
+      <Form
+        onSubmit={(event) =>
+          onFormSubmit(event, isEditing ? updateRecipe : createRecipe)
+        }
+      >
         <InputFieldLabel htmlFor="name">Name</InputFieldLabel>
         <InputField
           type="text"
@@ -103,7 +116,7 @@ export default function CreateEditRecipePage() {
           type="text"
           id="ingredients"
           name="ingredients"
-          defaultValue={formatIngredients(recipe?.ingredients)}
+          defaultValue={formatIngredientsForForm(recipe?.ingredients)}
           disabled={formFieldsDisabled}
         />
 

@@ -32,12 +32,14 @@ export default function RecipePage() {
     useNavigation();
   const recipe = useRecipe(recipeId);
 
-  const deleteRecipe = () =>
-    deleteRecipeAPI(recipeId)
-      .then((response) => {
-        if (response.status === 204) navigateToRecipeListPage("deleted");
-      })
-      .catch((err) => console.error(err));
+  const deleteRecipe = async () => {
+    try {
+      await deleteRecipeAPI(recipeId);
+      navigateToRecipeListPage("deleted");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -48,9 +50,7 @@ export default function RecipePage() {
             <Button onClick={() => navigateToRecipeEditionPage(recipeId)}>
               ✏️ Edit
             </Button>
-            <DeleteButton onClick={deleteRecipe} data-testid="delete">
-              ❌ Delete
-            </DeleteButton>
+            <DeleteButton onClick={deleteRecipe}>❌ Delete</DeleteButton>
           </ButtonsContainer>
           {updated && <Alert>Recipe updated</Alert>}
           <Recipe recipe={recipe} />
