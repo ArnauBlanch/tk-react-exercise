@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import useNavigation from "../hooks/useNavigation";
 import Button from "../components/Button";
 import Title from "../components/Title";
 import {
-  getRecipe as getRecipeAPI,
   createRecipe as createRecipeAPI,
   updateRecipe as updateRecipeAPI,
 } from "../data/api";
+import useRecipe from "../hooks/useRecipe";
 
 const Form = styled.form`
   display: flex;
@@ -45,16 +45,8 @@ const formatIngredients = (ingredients) =>
 export default function CreateEditRecipePage() {
   const { navigateToRecipePage, navigateToRecipeListPage } = useNavigation();
   const { recipeId } = useParams();
-  const isEditing = recipeId !== undefined;
-  const [recipe, setRecipe] = useState(null);
-
-  useEffect(() => {
-    if (isEditing) {
-      getRecipeAPI(recipeId)
-        .then((response) => setRecipe(response.data))
-        .catch((error) => console.error(error));
-    }
-  }, [recipeId, isEditing]);
+  const isEditing = Boolean(recipeId);
+  const recipe = useRecipe(recipeId);
 
   const onFormSubmit = (handler) => (event) => {
     event.preventDefault();

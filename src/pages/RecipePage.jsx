@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useQuery } from "../utils";
 import Recipe from "../components/Recipe";
 import Alert from "../components/Alert";
 import Button from "../components/Button";
-import {
-  getRecipe as getRecipeAPI,
-  deleteRecipe as deleteRecipeAPI,
-} from "../data/api";
+import { deleteRecipe as deleteRecipeAPI } from "../data/api";
 import useNavigation from "../hooks/useNavigation";
+import useRecipe from "../hooks/useRecipe";
 
 const DeleteButton = styled(Button)`
   background-color: #fda4af;
@@ -32,13 +30,7 @@ export default function RecipePage() {
   const { updated } = useQuery();
   const { navigateToRecipeListPage, navigateToRecipeEditionPage } =
     useNavigation();
-  const [recipe, setRecipe] = useState(null);
-
-  useEffect(() => {
-    getRecipeAPI(recipeId).then((response) => {
-      setRecipe(response.data);
-    });
-  }, [recipeId]);
+  const recipe = useRecipe(recipeId);
 
   const deleteRecipe = () =>
     deleteRecipeAPI(recipeId)
